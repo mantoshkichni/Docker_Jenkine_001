@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -23,6 +22,13 @@ pipeline {
         }
 
         stage('Docker Build') {
+            agent {
+                docker {
+                    image 'docker:latest'
+                    args '-v /var/run/docker.sock:/var/run/docker.sock'
+                    reuseNode true
+                }
+            }
             steps {
                 sh 'docker build -t spring-boot-app:latest .'
             }
